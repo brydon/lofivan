@@ -86,3 +86,17 @@ dialog{border:0;padding:0;background:none;color:var(--cream);width:min(700px,cal
 .compact-room .terminal-on-screen input{font-size:18px}
 .compact-room .monitor-terminal{touch-action:manipulation}
 .terminal-on-screen .ascii-output{font-size:12px;white-space:pre;overflow-wrap:normal;overflow-x:auto}
+
+/* Snake takes over only the CRT glass, then returns to the same shell history. */
+.snake-game{height:100%;padding:9px 10px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:4px;outline:none;cursor:default;user-select:none;-webkit-user-select:none;color:#c5e1b3;font:11px/1.25 var(--mono)}
+.snake-heading{display:flex;justify-content:space-between;align-items:baseline;padding:0 2px;letter-spacing:.06em}
+.snake-board{position:relative;min-height:0;touch-action:none;cursor:crosshair}
+.snake-board canvas{display:block;width:100%;height:100%;image-rendering:pixelated;border:1px solid #91b57866}
+.snake-message{position:absolute;inset:0;display:grid;place-items:center;padding:10px;background:#0c271cc9;color:#d6eab9;text-align:center;line-height:1.6;pointer-events:none}
+.snake-controls{margin:0;text-align:center;font-size:10px;line-height:1.3;color:#a9c799}
+.snake-touch{display:none}
+.compact-room .snake-game{font-size:14px}
+.compact-room .snake-controls{font-size:12px;line-height:1.25}
+.compact-room .snake-keys{display:none}
+.compact-room .snake-touch{display:inline}
+@media(pointer:coarse){.snake-keys{display:none}.snake-touch{display:inline}}

@@ -6,6 +6,8 @@ This is a buildless static website. `dist/index.html`, `dist/style.css`, and `di
 
 Serve locally with `python3 -m http.server 8000 --bind 127.0.0.1 --directory dist`, then open http://localhost:8000. JavaScript syntax can be checked with `node --check dist/app.js` when Node is available.
 
+Snake's game rules are covered by `node --test tests/snake.test.cjs`; also syntax-check `dist/snake.js` when editing the game.
+
 ## User's established direction
 
 - Site title: `lofivan`. Character: Ivan. Terminal username: `1vnzh`.
@@ -31,6 +33,7 @@ Serve locally with `python3 -m http.server 8000 --bind 127.0.0.1 --directory dis
 - The park sticker is a separate overlay within the character layer; preserve its position and readable caption.
 - The terminal uses a small simulated in-memory filesystem. It does not execute a real system shell.
 - `commandNames` is used by both help output and tab completion.
+- `snake` is listed in help and starts a mini game directly on the CRT. `dist/snake.js` contains its model and controller. Arrow keys/WASD steer, Space pauses, Enter replays, Q/Ctrl-C returns to the shell, and Escape quits and blurs. Phones use swipes, taps to pause/replay, and a hold to quit. Losing focus pauses the game; leaving restores terminal history.
 - Commands and output use text content, not HTML injection.
 - Styling includes earlier unused desktop/app rules. Preserve the working minimal interface when changing relevant selectors; a framework rewrite or broad cleanup is not needed for a focused edit.
 - The optional WebMCP registration is feature-detected; the site works without it.

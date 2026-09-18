@@ -8,6 +8,12 @@ let historyIndex = 0;
 let sceneWidth = innerWidth;
 let sceneHeight = innerHeight;
 let keyboardVisible = false;
+const snake = new TerminalSnake($('snake-game'), (score, focusShell) => {
+  $('terminal-app').hidden = false;
+  printTerminal(`snake: score ${score}`);
+  if (focusShell) openComputer();
+  else $('snake-game').blur();
+});
 
 function placeRoom() {
   const width = innerWidth, height = innerHeight;
@@ -62,13 +68,17 @@ function placeRoom() {
   world.style.transform = `translate(${x}px,${y}px) scale(${scale})`;
 }
 function openComputer() {
+  if (snake.active) { $('snake-game').focus({preventScroll:true}); return; }
   $('command').focus({preventScroll:true});
   scrollTerminal();
   startComputerAudio();
 }
-function closeComputer() { $('command').blur(); }
+function closeComputer() { $('command').blur(); $('snake-game').blur(); snake.pause(); }
 computer.addEventListener('click', event => {
-  if (!window.getSelection()?.toString()) { $('command').focus({preventScroll:true}); startComputerAudio(); }
+  if (!window.getSelection()?.toString()) {
+    $(snake.active ? 'snake-game' : 'command').focus({preventScroll:true});
+    startComputerAudio();
+  }
 });
 document.addEventListener('pointerdown', event => {
   if (!computer.contains(event.target)) closeComputer();
@@ -76,7 +86,7 @@ document.addEventListener('pointerdown', event => {
 computer.addEventListener('keydown', event => {
   if (event.key === 'Escape') { event.preventDefault(); closeComputer(); }
 });
-function updateRoomLayout() { placeRoom(); updatePrompt(); }
+function updateRoomLayout() { placeRoom(); updatePrompt(); if (snake.active) snake.render(); }
 addEventListener('resize', updateRoomLayout);
 window.visualViewport?.addEventListener('resize', updateRoomLayout);
 window.visualViewport?.addEventListener('scroll', updateRoomLayout);
@@ -213,7 +223,7 @@ doo, doo d,oo
 
 [repeat indefinitely]`],
 ]);
-const commandNames = ['help','ls','pwd','cd','cat','echo','whoami','hostname','uname','date','uptime','history','clear','cowsay','north','north2','about','exit'];
+const commandNames = ['help','ls','pwd','cd','cat','echo','whoami','hostname','uname','date','uptime','history','clear','cowsay','snake','north','north2','about','exit'];
 function promptText() {
   const path = workingDirectory === HOME_DIRECTORY ? '~' : workingDirectory;
   const host = document.body.classList.contains('compact-room') ? '' : '@lofivan';
@@ -250,6 +260,7 @@ function splitCommand(raw) {
 function runCommand(raw) {
   if (typeof raw !== 'string' || raw.length > 500) throw new Error('Enter a command of up to 500 characters.');
   if (!raw.trim()) return { output: '' };
+  if (snake.active) snake.quit(false);
   printTerminal(`${promptText()} ${raw}`, true);
   commandHistory.push(raw);
   if (commandHistory.length > 200) commandHistory.shift();
@@ -267,6 +278,11 @@ function runCommand(raw) {
     case 'north': output = 'strong and free'; break;
     case 'north2': output = 'coming soon'; break;
     case 'cowsay': output = cowsay(args.join(' ')); break;
+    case 'snake':
+      $('command').blur();
+      $('terminal-app').hidden = true;
+      snake.start();
+      break;
     case 'whoami': output = USERNAME; break;
     case 'hostname': output = 'lofivan'; break;
     case 'uname': output = 'lofivan'; break;

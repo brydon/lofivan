@@ -9,6 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='4' width='28' height='21' rx='4' fill='%23d4c398'/%3E%3Crect x='6' y='8' width='20' height='13' rx='2' fill='%232f5b49'/%3E%3Cpath d='M11 29h10M16 25v4' stroke='%23d4c398' stroke-width='3'/%3E%3C/svg%3E">
   <link rel="preload" href="assets/background.png" as="image">
   <link rel="stylesheet" href="style.css">
+  <script src="snake.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -27,6 +28,14 @@
           <div id="terminal-app" class="terminal-app terminal-on-screen">
             <div id="terminal-output" class="terminal-output" role="log" aria-label="Terminal output"></div>
             <form id="terminal-form" autocomplete="off"><label id="terminal-prompt" for="command">1vnzh@lofivan:~ $</label><input id="command" name="command" aria-label="Terminal command" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="500" enterkeyhint="send" inputmode="text"></form>
+          </div>
+          <div id="snake-game" class="snake-game" tabindex="0" role="group" aria-label="Snake game" aria-describedby="snake-controls" hidden>
+            <div class="snake-heading"><span>snake</span><span id="snake-score">00</span></div>
+            <div class="snake-board">
+              <canvas width="192" height="120" role="img" aria-label="Snake playing field"></canvas>
+              <div class="snake-message" role="status" aria-live="polite"></div>
+            </div>
+            <p id="snake-controls" class="snake-controls"><span class="snake-keys">arrows / wasd · space pause<br>q quit</span><span class="snake-touch">swipe · tap pause<br>hold to quit</span></p>
           </div>
           <div class="scanlines" aria-hidden="true"></div>
         </section>
