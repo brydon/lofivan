@@ -137,7 +137,27 @@ const sessionStarted = Date.now();
 const directories = new Set(['/', '/home', HOME_DIRECTORY]);
 const files = new Map([
   [`${HOME_DIRECTORY}/readme.txt`, 'lofivan\n1vnzh\n\nTry help, north, north2, or cowsay hello.'],
-  [`${HOME_DIRECTORY}/music.txt`, 'lofivan — an original 74 BPM instrumental loop.\nWarm keys, soft drums, a quiet CRT hum.\n\nMusic starts automatically. You can mute this browser tab.'],
+  [`${HOME_DIRECTORY}/music.txt`, `[lyrics]
+
+doo, doo doo
+ding dung dong
+doo, doo d,oo
+ba dum, tss
+
+doo doo, doo doo
+ding ding, dung dong
+doo (with feeling)
+doo (same feeling)
+
+[bridge]
+dong
+
+[chorus]
+doo, doo doo
+ding dung dong
+doo, doo d,oo
+
+[repeat indefinitely]`],
 ]);
 const commandNames = ['help','ls','pwd','cd','cat','echo','whoami','hostname','uname','date','uptime','history','clear','cowsay','north','north2','about','exit'];
 function promptText() {
