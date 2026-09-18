@@ -136,7 +136,6 @@ let historyDraft = '';
 const sessionStarted = Date.now();
 const directories = new Set(['/', '/home', HOME_DIRECTORY]);
 const files = new Map([
-  [`${HOME_DIRECTORY}/readme.txt`, '7c8401e7e911aec408c0dd50e60162ca'],
   [`${HOME_DIRECTORY}/music.txt`, `[lyrics]
 
 doo, doo doo
