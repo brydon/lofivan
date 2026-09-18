@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#29291f">
+  <title>lofivan</title>
+  <meta name="description" content="Headphones on, the afternoon on repeat. Settle into an animated lofi room and explore its working retro computer.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='4' width='28' height='21' rx='4' fill='%23d4c398'/%3E%3Crect x='6' y='8' width='20' height='13' rx='2' fill='%232f5b49'/%3E%3Cpath d='M11 29h10M16 25v4' stroke='%23d4c398' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="preload" href="assets/background.png" as="image">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <main id="room" aria-label="A quiet illustrated coding room">
+    <div id="world" class="world">
+      <img class="room-art" src="assets/background.png" width="1672" height="941" alt="A sunlit illustrated workspace with exposed brick, trailing plants, books, and a wooden desk." fetchpriority="high">
+      <div class="character-layer">
+        <img class="ivan-art" src="assets/character.png" alt="Ivan in round glasses and headphones, using his heavily stickered laptop." draggable="false">
+        <span class="park-sticker" aria-hidden="true"><img src="assets/quttinirpaaq-sticker.png" alt="" draggable="false"></span>
+      </div>
+      <img class="computer-layer" src="assets/computer.png" alt="A beige CRT monitor and keyboard beside an NVIDIA DGX Spark." draggable="false">
+      <div class="screen-light" aria-hidden="true"></div>
+      <section id="computer" class="monitor-terminal" aria-label="lofivan terminal">
+        <div id="terminal-app" class="terminal-app terminal-on-screen">
+          <div id="terminal-output" class="terminal-output" role="log" aria-label="Terminal output"></div>
+          <form id="terminal-form" autocomplete="off"><label id="terminal-prompt" for="command">1vnzh@lofivan:~ $</label><input id="command" name="command" aria-label="Terminal command" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="500"></form>
+        </div>
+        <div class="scanlines" aria-hidden="true"></div>
+      </section>
+      <div class="dust" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="room-vignette" aria-hidden="true"></div>
+  </main>
+
+  <div id="announcement" class="sr-only" aria-live="polite"></div>
+  <audio id="radio" src="assets/afternoon-loop.mp3" autoplay loop preload="auto" aria-label="Original lofi instrumental music"></audio>
+</body>
+</html>
