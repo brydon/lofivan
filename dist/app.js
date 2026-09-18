@@ -5,13 +5,60 @@ const world = $('world');
 const radio = $('radio');
 const commandHistory = [];
 let historyIndex = 0;
+let sceneWidth = innerWidth;
+let sceneHeight = innerHeight;
+let keyboardVisible = false;
 
 function placeRoom() {
   const width = innerWidth, height = innerHeight;
-  let scale = Math.max(width / 1672, height / 941);
-  let x = (width - 1672 * scale) / 2;
-  let y = (height - 941 * scale) / 2;
-  if (width < 700) x = Math.min(0, Math.max(width - 1672 * scale, width * .48 - 510 * scale));
+  const typing = document.activeElement === $('command');
+  const viewport = window.visualViewport;
+  const visibleHeight = viewport ? viewport.height : height;
+  keyboardVisible = (typing || keyboardVisible) && width === sceneWidth
+    && visibleHeight < sceneHeight - 140 && (!viewport || viewport.scale <= 1.01);
+  // Keep the composition steady when the on-screen keyboard reduces the viewport.
+  if ((!typing && !keyboardVisible) || width !== sceneWidth || height > sceneHeight) {
+    sceneWidth = width;
+    sceneHeight = height;
+  }
+  const portrait = width <= 900 && sceneHeight > width;
+  const compactLandscape = !portrait && width <= 1024 && sceneHeight <= 500;
+  const visibleBottom = viewport ? viewport.offsetTop + viewport.height : height;
+  const keyboardMayBeOpen = (typing || keyboardVisible) && (!viewport || viewport.scale <= 1.01);
+  document.body.classList.toggle('portrait-room', portrait);
+  document.body.classList.toggle('compact-room', portrait || compactLandscape);
+  // The artwork and glass share a 625 x 417 rig; the glass ends at local y=269.
+  if (portrait) {
+    const rigScale = Math.min(width * 1.16, sceneHeight * .7) / 625;
+    const rigTop = sceneHeight * .94 - 417 * rigScale;
+    const characterWidth = Math.min(width * 1.3, sceneHeight * .83);
+    const lift = keyboardMayBeOpen
+      ? Math.max(0, rigTop + 269 * rigScale + 20 - visibleBottom) : 0;
+    world.style.width = `${width}px`;
+    world.style.height = `${sceneHeight}px`;
+    world.style.setProperty('--rig-scale', rigScale);
+    world.style.setProperty('--rig-left', `${(width - 625 * rigScale) / 2}px`);
+    world.style.setProperty('--rig-top', `${rigTop}px`);
+    world.style.setProperty('--character-width', `${characterWidth}px`);
+    world.style.setProperty('--character-left', `${width * .55 - characterWidth * .5}px`);
+    world.style.setProperty('--character-top', `${sceneHeight * .65 - characterWidth * .64}px`);
+    world.style.transform = `translateY(${-lift}px)`;
+    return;
+  }
+  world.style.width = '1672px';
+  world.style.height = '941px';
+  const layoutHeight = compactLandscape ? sceneHeight : height;
+  const scale = Math.max(width / 1672, layoutHeight / 941);
+  const x = (width - 1672 * scale) / 2;
+  let y = (layoutHeight - 941 * scale) / 2;
+  if (compactLandscape) {
+    const rigScale = Math.max(1.3, Math.min(1.8, .66 / scale));
+    const rigTop = 790 - 417 * rigScale;
+    world.style.setProperty('--rig-scale', rigScale);
+    world.style.setProperty('--rig-left', `${525 - 351 * rigScale}px`);
+    world.style.setProperty('--rig-top', `${rigTop}px`);
+    if (keyboardMayBeOpen) y -= Math.max(0, y + (rigTop + 269 * rigScale) * scale + 20 - visibleBottom);
+  }
   world.style.transform = `translate(${x}px,${y}px) scale(${scale})`;
 }
 function openComputer() {
@@ -29,7 +76,12 @@ document.addEventListener('pointerdown', event => {
 computer.addEventListener('keydown', event => {
   if (event.key === 'Escape') { event.preventDefault(); closeComputer(); }
 });
-addEventListener('resize', placeRoom);
+function updateRoomLayout() { placeRoom(); updatePrompt(); }
+addEventListener('resize', updateRoomLayout);
+window.visualViewport?.addEventListener('resize', updateRoomLayout);
+window.visualViewport?.addEventListener('scroll', updateRoomLayout);
+$('command').addEventListener('focus', () => requestAnimationFrame(updateRoomLayout));
+$('command').addEventListener('blur', () => requestAnimationFrame(updateRoomLayout));
 placeRoom();
 
 function updateRadioState() {
@@ -96,9 +148,10 @@ computer.addEventListener('focusin',startComputerAudio);
 computer.addEventListener('focusout',startComputerAudio);
 startComputerAudio();
 
-function printTerminal(text, echo = false) {
+function printTerminal(text, echo = false, ascii = false) {
   const line = document.createElement('p'); line.textContent = text;
   if (echo) line.className = 'echo';
+  if (ascii) line.classList.add('ascii-output');
   $('terminal-output').append(line);
   while ($('terminal-output').childElementCount > 120) $('terminal-output').firstElementChild.remove();
   scrollTerminal();
@@ -163,7 +216,8 @@ doo, doo d,oo
 const commandNames = ['help','ls','pwd','cd','cat','echo','whoami','hostname','uname','date','uptime','history','clear','cowsay','north','north2','about','exit'];
 function promptText() {
   const path = workingDirectory === HOME_DIRECTORY ? '~' : workingDirectory;
-  return `${USERNAME}@lofivan:${path} $`;
+  const host = document.body.classList.contains('compact-room') ? '' : '@lofivan';
+  return `${USERNAME}${host}:${path} $`;
 }
 function updatePrompt() { $('terminal-prompt').textContent = promptText(); }
 function resolvePath(path = '~') {
@@ -285,7 +339,7 @@ you missed the ls train.`;
     case 'exit': closeComputer(); break;
     default: output = `${name}: command not found\nType help for commands.`;
   }
-  if (output) printTerminal(output);
+  if (output) printTerminal(output, false, ['cowsay', 'coffee', 'sl'].includes(name.toLowerCase()));
   return { output, directory: workingDirectory };
 }
 updatePrompt();
@@ -333,4 +387,4 @@ if (document.modelContext?.registerTool) {
   addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
 }
 
-if (matchMedia('(pointer: fine)').matches) requestAnimationFrame(openComputer);
+if (matchMedia('(pointer: fine) and (min-width: 901px)').matches) requestAnimationFrame(openComputer);

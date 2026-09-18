@@ -24,8 +24,10 @@ Serve locally with `python3 -m http.server 8000 --bind 127.0.0.1 --directory dis
 
 ## Implementation notes
 
-- `placeRoom()` scales and positions a 1672 x 941 world canvas. The artwork layers and interactive terminal share those coordinates.
-- The computer layer includes the CRT, keyboard, and Spark. The terminal overlay must remain aligned with the CRT glass after artwork edits.
+- `placeRoom()` uses the original 1672 x 941 world on desktop. On portrait screens up to 900px wide, it arranges Ivan above the CRT against a cropped room background; small landscape screens get a larger CRT.
+- `.computer-rig` groups the CRT, keyboard, Spark, screen glow, and live terminal. It uses `display: contents` on desktop and shared transforms on compact layouts. Compact rig coordinates are 625 x 417, with the terminal at (240, 75), sized 222 x 194. Preserve glass alignment after artwork or layout edits.
+- Compact layouts use a shorter `1vnzh:~ $` prompt and larger text; ASCII-art output retains its fixed-width layout. The terminal does not automatically focus on phone-sized screens.
+- Keyboard resizing preserves the scene's original height and scale, moving the room upward only as needed to keep the CRT above the keyboard. Use the visual viewport for keyboard visibility and account for its closing animation.
 - The park sticker is a separate overlay within the character layer; preserve its position and readable caption.
 - The terminal uses a small simulated in-memory filesystem. It does not execute a real system shell.
 - `commandNames` is used by both help output and tab completion.

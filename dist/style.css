@@ -72,3 +72,17 @@ dialog{border:0;padding:0;background:none;color:var(--cream);width:min(700px,cal
 /* A first-visit invitation that keeps pulsing until the first click or tap. */
 .listen-hint{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;text-align:center;white-space:nowrap;color:#fff;font-family:var(--mono);font-size:clamp(20px,1.7vw,26px);line-height:1.4;letter-spacing:.04em;text-shadow:0 2px 12px #000a;pointer-events:none;user-select:none;animation:listen-pulse 2.8s ease-in-out infinite}
 @keyframes listen-pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.8}50%{transform:translate(-50%,calc(-50% - 4px)) scale(1.06);opacity:1}}
+
+/* Keep the desktop coordinates intact; compose the same layers for portrait screens. */
+.computer-rig{display:contents}
+.compact-room .world{transition:none}
+.portrait-room .room-art{position:absolute;left:50%;top:-45%;width:auto;height:145%;transform:translateX(-32%)}
+.portrait-room .character-layer{left:var(--character-left);top:var(--character-top);width:var(--character-width)}
+.compact-room .computer-rig{display:block;position:absolute;left:var(--rig-left);top:var(--rig-top);width:625px;height:417px;transform:scale(var(--rig-scale));transform-origin:0 0;z-index:4}
+.compact-room .computer-layer{left:0;top:0;width:625px}
+.compact-room .monitor-terminal,.compact-room .screen-light{left:240px;top:75px}
+.compact-room .terminal-on-screen{font-size:18px}
+.compact-room .terminal-on-screen form{gap:.4em}
+.compact-room .terminal-on-screen input{font-size:18px}
+.compact-room .monitor-terminal{touch-action:manipulation}
+.terminal-on-screen .ascii-output{font-size:12px;white-space:pre;overflow-wrap:normal;overflow-x:auto}
