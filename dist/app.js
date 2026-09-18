@@ -108,7 +108,7 @@ radio.addEventListener('playing', updateRadioState);
 radio.addEventListener('pause', updateRadioState);
 radio.addEventListener('error', updateRadioState);
 function dismissListenHint() { $('listen-hint').hidden = true; }
-document.addEventListener('click', dismissListenHint, { once: true, capture: true });
+for (const event of ['click', 'keydown']) document.addEventListener(event, dismissListenHint, { once: true, capture: true });
 // Try on arrival, then retry inside a real gesture when autoplay is blocked.
 for (const event of ['pointerdown', 'click', 'keydown']) document.addEventListener(event, startRadio, { capture: true, passive: true });
 startRadio();

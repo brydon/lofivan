@@ -69,7 +69,7 @@ dialog{border:0;padding:0;background:none;color:var(--cream);width:min(700px,cal
 .park-sticker{position:absolute;left:36.848958%;top:57.519531%;width:7.226563%;height:10.9375%;transform-origin:0 0;transform:matrix(1,.036036,.133929,1,0,0);pointer-events:none}
 .park-sticker img{position:absolute;display:block;max-width:none;width:116.651163%;height:119.201521%;left:-8.279070%;top:-10.076046%;pointer-events:none}
 
-/* A first-visit invitation that keeps pulsing until the first click or tap. */
+/* A first-visit invitation that pulses until the first click, tap, or keypress. */
 .listen-hint{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;text-align:center;white-space:nowrap;color:#fff;font-family:var(--mono);font-size:clamp(20px,1.7vw,26px);line-height:1.4;letter-spacing:.04em;text-shadow:0 2px 12px #000a;pointer-events:none;user-select:none;animation:listen-pulse 2.8s ease-in-out infinite}
 @keyframes listen-pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.8}50%{transform:translate(-50%,calc(-50% - 4px)) scale(1.06);opacity:1}}
 
