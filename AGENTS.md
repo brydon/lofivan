@@ -17,6 +17,7 @@ Serve locally with `python3 -m http.server 8000 --bind 127.0.0.1 --directory dis
 - Keep the terminal commands, including `cowsay`, `north` returning `strong and free`, and `north2` returning `coming soon`.
 - `about` opens https://twitter.com/1vnzh in a new tab.
 - Music tries to autoplay, with a first-interaction fallback when required by the browser. Soft typing clicks and a faint CRT hum are part of the experience. No play/pause controls.
+- A white "click to listen" hint gently floats and pulses at the center of the screen until the first click or tap, then disappears for the rest of that page visit. Typing and playback starting do not dismiss it. Respect reduced-motion preferences.
 - Preserve the sunny brick-and-plants scene. Ivan faces left and wears headphones while using his heavily stickered laptop. The CRT is a separate computer.
 - The small NVIDIA DGX Spark beside the CRT should stand vertically.
 - Preserve readable sticker and book lettering; do not mirror their text. Keep the keyboard numpad on the right.
